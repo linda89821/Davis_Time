@@ -3,6 +3,10 @@ var classes = [''];
 var professors = [''];
 var subjs = [''];
 var class_prof = [];
+var class_subj = [];
+var prof_subj = [];
+var checker_class = new Set([]);
+var checker_prof = new Set([]);
 var checker = new Set([]);
 var mychart;
 var years = ['16-17', '17-18', '18-19', '19-20', '20-21'];
@@ -24,38 +28,38 @@ function read(path, index) {
                 const myArray = reader.result.split('\n');
                 var crn, subj, crse, section, term, units, gpa, prof_name, enrolled, count_grade, title;
                 for (var i = 1; i < myArray.length; i++) {
-                    if (myArray[i].split(',')[0] != undefined){
-                        crn = parseInt(myArray[i].split(',')[0].replace('\"', '').replace('\"', ''));
+                    if (myArray[i].split(';')[0] != undefined){
+                        crn = parseInt(myArray[i].split(';')[0]);
                     }
-                    if (myArray[i].split(',')[1] != undefined){
-                        subj = myArray[i].split(',')[1].replace('\"', '').replace('\"', '');
+                    if (myArray[i].split(';')[1] != undefined){
+                        subj = myArray[i].split(';')[1];
                     }
-                    if (myArray[i].split(',')[2] != undefined){
-                        crse = myArray[i].split(',')[2].replace('\"', '').replace('\"', '');
+                    if (myArray[i].split(';')[2] != undefined){
+                        crse = myArray[i].split(';')[2];
                     }
-                    if (myArray[i].split(',')[3] != undefined){
-                        section = myArray[i].split(',')[3].replace('\"', '').replace('\"', '');
+                    if (myArray[i].split(';')[3] != undefined){
+                        section = myArray[i].split(';')[3];
                     }
-                    if (myArray[i].split(',')[4] != undefined){
-                        term = myArray[i].split(',')[4].replace('\"', '').replace('\"', '');
+                    if (myArray[i].split(';')[4] != undefined){
+                        term = myArray[i].split(';')[4];
                     }
-                    if (myArray[i].split(',')[5] != undefined){
-                        units = parseInt(myArray[i].split(',')[5].replace('\"', '').replace('\"', ''));
+                    if (myArray[i].split(';')[5] != undefined){
+                        units = parseInt(myArray[i].split(';')[5]);
                     }
-                    if (myArray[i].split(',')[6] != undefined){
-                        gpa = myArray[i].split(',')[6].replace('\"', '').replace('\"', '');
+                    if (myArray[i].split(';')[6] != undefined){
+                        gpa = myArray[i].split(';')[6];
                     }
-                    if (myArray[i].split(',')[7] != undefined){
-                        title = myArray[i].split(',')[7].replace('\"', '').replace('\"', '');
+                    if (myArray[i].split(';')[7] != undefined){
+                        title = myArray[i].split(';')[7];
                     }
-                    if (myArray[i].split(',')[8] != undefined){
-                        prof_name = myArray[i].split(',')[9].replace('\"', '').replace('\"', '')+' '+myArray[i].split(',')[8].replace('\"', '').replace('\"', '');
+                    if (myArray[i].split(';')[8] != undefined){
+                        prof_name = myArray[i].split(';')[9]+' '+myArray[i].split(';')[8];
                     }
-                    if (myArray[i].split(',')[11] != undefined){
-                        enrolled = parseInt(myArray[i].split(',')[11].replace('\"', '').replace('\"', ''));
+                    if (myArray[i].split(';')[11] != undefined){
+                        enrolled = parseInt(myArray[i].split(';')[11]);
                     }
-                    if (myArray[i].split(',')[12] != undefined){
-                        count_grade = parseInt(myArray[i].split(',')[12].replace('\"', '').replace('\"', '').replace('\r', ''));
+                    if (myArray[i].split(';')[12] != undefined){
+                        count_grade = parseInt(myArray[i].split(';')[12].replace('\r', ''));
                     }
                     if(classes.includes(title) == false){
                         classes.push(title);
@@ -66,12 +70,22 @@ function read(path, index) {
                     if(subjs.includes(subj) == false){
                         subjs.push(subj);
                     }
-                    //title = myArray.replace(crn, '').replace(subj, '').replace(crse, '').replace(section, '').replace(term, '').replace(units, '').replace(gpa, '').replace(prof_name, '').replace(enrolled, '').replace(count_grade, '');
-                    //console.log(myArray[i]-subj-crse-term);
+                    // title = myArray.replace(crn, '').replace(subj, '').replace(crse, '').replace(section, '').replace(term, '').replace(units, '').replace(gpa, '').replace(prof_name, '').replace(enrolled, '').replace(count_grade, '');
+                    // console.log(myArray[i]-subj-crse-term);
                     var cur_title_prof = [title, prof_name, subj]
                     if (checker.has(title+prof_name+subj) == false){
                         class_prof.push(cur_title_prof);
                         checker.add(title+prof_name+subj);
+                    }
+                    var cur_title = [title, subj]
+                    if (checker_class.has(title+subj) == false){
+                        class_subj.push(cur_title);
+                        checker_class.add(title+subj);
+                    }
+                    var cur_prof = [prof_name, subj]
+                    if (checker_prof.has(prof_name+subj) == false){
+                        prof_subj.push(cur_prof);
+                        checker_prof.add(prof_name+subj);
                     }
                     const course = {
                         CRN: crn,
@@ -91,6 +105,9 @@ function read(path, index) {
                         courses.push(course);
                     }
                 }
+            }
+            for (var i = 0; i < classes.length; i++) {
+                console.log(classes[i]);
             }
             reader.readAsText(xhr.response);
             
@@ -188,16 +205,19 @@ function clickSelection(classes, subjs, professors){
         while (select_class.length > 0) {
             select_class.remove(0);
         }
-        for (var i = 0; i < class_prof.length; i++) {
-            if (class_prof[i][2] == select_subj.value) {
+        for (var i = 0; i < prof_subj.length; i++) {
+            if (prof_subj[i][1] == select_subj.value) {
                 var opt_prof = document.createElement('option');
-                opt_prof.value = class_prof[i][1];
-                opt_prof.innerHTML = class_prof[i][1];
-                var opt_class = document.createElement('option');
-                opt_class.value = class_prof[i][0];
-                opt_class.innerHTML = class_prof[i][0];
-
+                opt_prof.value = prof_subj[i][0];
+                opt_prof.innerHTML = prof_subj[i][0];
                 select_prof.appendChild(opt_prof);
+            }
+        }
+        for (var i = 0; i < class_subj.length; i++) {
+            if (class_subj[i][1] == select_subj.value) {
+                var opt_class = document.createElement('option');
+                opt_class.value = class_subj[i][0];
+                opt_class.innerHTML = class_subj[i][0];
                 select_class.appendChild(opt_class);
             }
         }
