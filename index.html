@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Davis Time</title>
+    <!-- Chore Card Custom Element -->
+
+    <!-- Main Stylesheets & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+  <script src="https://kit.fontawesome.com/cd99b7ce8b.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./main.css">
+  <script src="./PapaParse/papaparse.js"></script>
+  <script src="./main.js" type="module"></script>
+
+ <body>
+    <div class="wrapper">
+        <header class="main-head">
+            <div class="title-box">
+                <a class="header-title" href="#">Davis Time</a>
+            </div>
+        </header>
+        <div class="main-page">
+            <main>
+                <select name="year" id="year">
+                    <option value="16-17">2016-2017</option>
+                    <option value="17-18">2017-2018</option>
+                    <option value="18-19">2018-2019</option>
+                    <option value="19-20">2019-2020</option>
+                    <option value="20-21">2020-2021</option>
+                </select>
+                <!-- <button type="year_submit" id="year_submit">Submit Year</button> -->
+                <select name="subj" id="subj"></select>
+                <button type="subj_submit" id="subj_submit">Select Subject</button>
+                <br><br>
+                <div class="advance_search" id="advance_search">
+                    <select name="classes" id="classes"></select>
+                    <button type="class_submit" id="class_submit">Select Class</button>
+                    <br><br>
+                    <select name="professors" id="professors"></select>
+                    <button type="prof_submit" id="prof_submit">Select Professor</button>
+                </div>
+                <br><br>
+                <button type="submit" id="submit">Submit</button>
+                <button type="reset" id="reset">Reset</button>
+            </main>
+            <canvas id="myChart" style="width:100%;max-width:600px;height:100%;max-height:300px;"></canvas>
+            <p></p>
+            <div class="demo"></div>
+            <div class="footer"></div>
+        </div>
+    </div>
+  </body>
+
+</html>

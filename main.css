@@ -1,0 +1,71 @@
+@import "https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap";
+
+.body{
+    margin: 0;
+    overflow: scroll;
+}
+/* .wrapper{
+    background-color: rgb(169, 169, 169);
+    z-index: -10;
+} */
+.main-head {
+    background-color: #8ccbbc;
+    width: 100%;
+    height: 3.5rem;
+}
+
+.header-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    font-family: Nunito, sans-serif;
+    font-size: 1.5rem;
+    color: white;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.main-page{
+    position: relative;
+    top: 1.375rem;
+    margin-left: 1rem;
+    overflow-y: auto;
+    z-index: 10;
+}
+.advance_search{
+    display: none;
+}
+
+#subj_submit, #class_submit, #prof_submit, #submit, #reset{
+    /* Set the size of the button and apply some padding to it */
+    /* width: 10%; */
+    padding: 0 1%; 
+  
+    /* Disable the border and apply corners to four edges */
+    border: none;
+    border-radius: 15px;
+  
+    /* Set button color and the text color with text size */
+    background: #3793cd;
+    font-size: 90%;
+    font-weight: 400;
+    font-family: Nunito, sans-serif;
+    color: #fff;
+  }
+  
+  /* Add some fancy animation when user hovers to the 'Submit' button */
+  #subj_submit:hover, #class_submit:hover, #prof_submit:hover, #submit:hover, #reset:hover{
+    /* Change color to darker blue to the button */
+    background: #2371a0;
+    cursor: pointer;
+  }
+
+  #myChart, p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 3% 0 3%;
+    margin: 0 1% 1% 1%;
+  }
