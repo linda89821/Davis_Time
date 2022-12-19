@@ -254,6 +254,7 @@ function clickSelection(classes, subjs, professors){
 function clickBtn(classes, subjs, professors, select_class, select_prof, select_subj){
     var reset = document.getElementById('reset');
     reset.addEventListener('click', () => {
+        document.querySelector('p').innerHTML = '';
         while (select_prof.length > 0) {
             select_prof.remove(0);
         }
