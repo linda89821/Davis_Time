@@ -62,10 +62,18 @@
     cursor: pointer;
   }
 
-  #myChart, p {
+  #mychart, p {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 3% 0 3%;
+    padding: 1% 3% 0 3%;
     margin: 0 1% 1% 1%;
+    font-family: Nunito, sans-serif;
+    font-size: 105%;
+    font-weight: 400;
   }
+
+ .chart{
+    display: flex;
+    justify-content: center;
+ }
