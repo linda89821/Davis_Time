@@ -15,7 +15,7 @@ var checker = new Set([]);
 var mychart;
 var years = ['16-17', '17-18', '18-19', '19-20', '20-21'];
 var xArray = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
-var yArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+//var yArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var grade = 0.0;
 var enrolled = 0;
 var layout;
@@ -277,6 +277,7 @@ function calculate_gpa(courses){
     var year_menu = document.getElementById('year');
     grade = 0;
     enrolled = 0;
+    var yArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (var i = 0; i < courses.length; i++) {
         if (courses[i].CRSE_TITLE == classmenu.value && courses[i].PROF_NAME == profmenu.value && courses[i].YEAR == year_menu.value) {
             layout = courses[i].CRSE_TITLE;
