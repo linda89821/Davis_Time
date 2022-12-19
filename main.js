@@ -106,9 +106,9 @@ function read(path, index) {
                     }
                 }
             }
-            for (var i = 0; i < classes.length; i++) {
-                console.log(classes[i]);
-            }
+//             for (var i = 0; i < classes.length; i++) {
+//                 console.log(classes[i]);
+//             }
             reader.readAsText(xhr.response);
             
             if (courses.length > 0){
