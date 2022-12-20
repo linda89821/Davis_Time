@@ -4,9 +4,11 @@
     margin: 0;
     overflow: scroll;
 }
-/* .wrapper{
-    background-color: rgb(169, 169, 169);
-    z-index: -10;
+
+/* main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 } */
 .main-head {
     background-color: #8ccbbc;
@@ -14,7 +16,7 @@
     height: 3.5rem;
 }
 
-.header-title{
+.title-box{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,7 +47,7 @@
   
     /* Disable the border and apply corners to four edges */
     border: none;
-    border-radius: 15px;
+    border-radius: 8px;
   
     /* Set button color and the text color with text size */
     background: #3793cd;
@@ -62,7 +64,7 @@
     cursor: pointer;
   }
 
-  #mychart, p {
+ #mychart, p {
     display: flex;
     justify-content: center;
     align-items: center;
