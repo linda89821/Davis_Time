@@ -1,70 +1,98 @@
 @import "https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap";
-
-.body{
+body {
     margin: 0;
     overflow: scroll;
-}
-
-/* main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
-.main-head {
+  }
+  
+  /* #### Header Layout #### */
+  
+  /**
+   * Grid display for organizing header element
+   */
+  .main-head {
+    /* Define grid display for header */
+    display: grid;
+    gap: 0.875rem;
+    grid-template-columns: 1fr 4fr 1fr;
+  
+    /* Define the header styling */
     background-color: #8ccbbc;
+    overflow: hidden;
     width: 100%;
     height: 3.5rem;
-}
-
-.title-box{
-    display: flex;
+  
+    /* Define header position to be fixed at the top */
+    position: fixed;
+  
+    /* Stack it above other elements on page */
+    z-index: 1;
+  }
+  
+  /**
+   * Container for header-title for the header
+   */
+  .title-box {
+    /* Centering title in the middle of header */
+    display: relative;
     justify-content: center;
-    align-items: center;
+    align-items: center;  
+    margin: 1.9% 270% 0 270%;
+    /* Sizing the title container to fit center grid */
     width: 100%;
-    height: 60px;
-    font-family: Nunito, sans-serif;
-    font-size: 1.5rem;
-    color: white;
+    height: 100%;
+    font-size: 200%;
     font-weight: 400;
-    text-decoration: none;
-}
+    font-family: Nunito, sans-serif;
+    color: #fff;
+  }
 
-.main-page{
+
+.main-page {
     position: relative;
-    top: 1.375rem;
+    top: 5.375rem;
     margin-left: 1rem;
     overflow-y: auto;
     z-index: 10;
 }
-.advance_search{
+
+.advance_search {
     display: none;
 }
 
-#subj_submit, #class_submit, #prof_submit, #submit, #reset{
+#subj_submit,
+#class_submit,
+#prof_submit,
+#submit,
+#reset {
     /* Set the size of the button and apply some padding to it */
     /* width: 10%; */
-    padding: 0 1%; 
-  
+    padding: 0 1%;
+
     /* Disable the border and apply corners to four edges */
     border: none;
     border-radius: 8px;
-  
+
     /* Set button color and the text color with text size */
     background: #3793cd;
     font-size: 90%;
     font-weight: 400;
     font-family: Nunito, sans-serif;
     color: #fff;
-  }
-  
-  /* Add some fancy animation when user hovers to the 'Submit' button */
-  #subj_submit:hover, #class_submit:hover, #prof_submit:hover, #submit:hover, #reset:hover{
+}
+
+/* Add some fancy animation when user hovers to the 'Submit' button */
+#subj_submit:hover,
+#class_submit:hover,
+#prof_submit:hover,
+#submit:hover,
+#reset:hover {
     /* Change color to darker blue to the button */
     background: #2371a0;
     cursor: pointer;
-  }
+}
 
- #mychart, p {
+#mychart,
+p {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -73,9 +101,9 @@
     font-family: Nunito, sans-serif;
     font-size: 105%;
     font-weight: 400;
-  }
+}
 
- .chart{
+.chart {
     display: flex;
     justify-content: center;
- }
+}
