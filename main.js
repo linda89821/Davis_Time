@@ -15,7 +15,6 @@ var checker = new Set([]);
 var mychart;
 var years = ['16-17', '17-18', '18-19', '19-20', '20-21'];
 var xArray = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
-//var yArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var grade = 0.0;
 var enrolled = 0;
 var layout;
@@ -74,7 +73,7 @@ Promise.all(readers).then((values) => {
 function put_data_from_csv(data, index){
     var year = years[index];
     const myArray = data.split('\n');
-    var crn, subj, crse, section, term, units, gpa, prof_name, enrolled, count_grade, title;
+    var crn, subj, crse, section, term, units, gpa, prof_name, enrolled, count_grade, title, year_term;
     for (var i = 1; i < myArray.length; i++) {
         if (myArray[i].split(';')[0] != undefined) {
             crn = parseInt(myArray[i].split(';')[0]);
@@ -89,7 +88,21 @@ function put_data_from_csv(data, index){
             section = myArray[i].split(';')[3];
         }
         if (myArray[i].split(';')[4] != undefined) {
-            term = myArray[i].split(';')[4];
+            year_term = myArray[i].split(';')[4].substring(0,4);
+            term = myArray[i].split(';')[4].substring(4,6);
+            //console.log(term);
+            if (term == '01' || term == '02' || term == '03'){
+                term = 'Winter';
+            }
+            else if (term == '04' || term == '05' || term == '06'){
+                term = 'Spring';
+            }
+            else if (term == '07' || term == '08'){
+                term = 'Summer';
+            }
+            else if (term == '09' || term == '10' || term == '11' || term == '12'){
+                term = 'Fall';
+            }
         }
         if (myArray[i].split(';')[5] != undefined) {
             units = parseInt(myArray[i].split(';')[5]);
@@ -121,20 +134,20 @@ function put_data_from_csv(data, index){
             subjs.push(subj);
             subj_set.add(subj);
         }
-        var cur_title_prof = [title, prof_name, subj, year]
-        if (checker.has(title + prof_name + subj + year) == false) {
+        var cur_title_prof = [title, prof_name, subj, year, term]
+        if (checker.has(title + prof_name + subj + year + term) == false) {
             class_prof.push(cur_title_prof);
-            checker.add(title + prof_name + subj + year);
+            checker.add(title + prof_name + subj + year + term);
         }
-        var cur_title = [title, subj, year]
-        if (checker_class.has(title + subj + year) == false) {
+        var cur_title = [title, subj, year, term]
+        if (checker_class.has(title + subj + year + term) == false) {
             class_subj.push(cur_title);
-            checker_class.add(title + subj + year);
+            checker_class.add(title + subj + year + term);
         }
-        var cur_prof = [prof_name, subj, year]
-        if (checker_prof.has(prof_name + subj + year) == false) {
+        var cur_prof = [prof_name, subj, year, term]
+        if (checker_prof.has(prof_name + subj + year + term) == false) {
             prof_subj.push(cur_prof);
-            checker_prof.add(prof_name + subj + year);
+            checker_prof.add(prof_name + subj + year + term);
         }
         const course = {
             CRN: crn,
@@ -149,6 +162,7 @@ function put_data_from_csv(data, index){
             ENROLLED: enrolled,
             CNTOFGRADE: count_grade,
             YEAR: year,
+            YEAR_TERM: year_term,
         }
         if (course.CRN != '' && i != 0) {
             courses.push(course);
@@ -171,37 +185,13 @@ function clickSelection(classes, subjs, professors){
     var select_prof = document.getElementById('professors');
     var select_subj = document.getElementById('subj');
     var select_year = document.getElementById('year');
+    var select_term = document.getElementById('term');
 
-    //var year_submit = document.getElementById('year_submit');
     var sub_submit = document.getElementById('subj_submit');
     var class_submit = document.getElementById('class_submit');
     var prof_submit = document.getElementById('prof_submit');
-    
-    // year_submit.addEventListener('click', () => {
-    //     //console.log('hi');
-    //     while (select_prof.length > 0) {
-    //         select_prof.remove(0);
-    //     }
-    //     while (select_class.length > 0) {
-    //         select_class.remove(0);
-    //     }
-    //     for (var i = 0; i < class_prof.length; i++) {
-    //         if (class_prof[i][3] == select_year.value) {
-    //             var opt_prof = document.createElement('option');
-    //             opt_prof.value = class_prof[i][1];
-    //             opt_prof.innerHTML = class_prof[i][1];
-    //             var opt_class = document.createElement('option');
-    //             opt_class.value = class_prof[i][0];
-    //             opt_class.innerHTML = class_prof[i][0];
-
-    //             select_prof.appendChild(opt_prof);
-    //             select_class.appendChild(opt_class);
-    //         }
-    //     }
-    // });
 
     sub_submit.addEventListener('click', () => {
-        document.getElementById('advance_search').style.display = 'block';
         while (select_prof.length > 0) {
             select_prof.remove(0);
         }
@@ -209,7 +199,7 @@ function clickSelection(classes, subjs, professors){
             select_class.remove(0);
         }
         for (var i = 0; i < prof_subj.length; i++) {
-            if (prof_subj[i][1] == select_subj.value && prof_subj[i][2] == select_year.value) {
+            if (prof_subj[i][1] == select_subj.value && prof_subj[i][2] == select_year.value && prof_subj[i][3] == select_term.value) {
                 //console.log(prof_subj[i][0]);
                 var opt_prof = document.createElement('option');
                 opt_prof.value = prof_subj[i][0];
@@ -218,12 +208,19 @@ function clickSelection(classes, subjs, professors){
             }
         }
         for (var i = 0; i < class_subj.length; i++) {
-            if (class_subj[i][1] == select_subj.value && class_subj[i][2] == select_year.value) {
+            if (class_subj[i][1] == select_subj.value && class_subj[i][2] == select_year.value && class_subj[i][3] == select_term.value) {
                 var opt_class = document.createElement('option');
                 opt_class.value = class_subj[i][0];
                 opt_class.innerHTML = class_subj[i][0];
                 select_class.appendChild(opt_class);
             }
+        }
+        if (document.getElementById('classes').length != 0 || document.getElementById('professors').length != 0){
+            document.getElementById('advance_search').style.display = 'block';
+        }
+        else{
+            document.getElementById('advance_search').style.display = 'none';
+            document.querySelector('p').innerHTML = 'No such evaluation available.';
         }
     });
 
@@ -232,7 +229,7 @@ function clickSelection(classes, subjs, professors){
             select_prof.remove(0);
         }
         for (var i = 0; i < class_prof.length; i++) {
-            if (class_prof[i][0] == select_class.value && class_prof[i][2] == select_subj.value  && class_prof[i][3] == select_year.value) {
+            if (class_prof[i][0] == select_class.value && class_prof[i][2] == select_subj.value && class_prof[i][3] == select_year.value  && class_prof[i][4] == select_term.value) {
                 var opt_prof = document.createElement('option');
                 opt_prof.value = class_prof[i][1];
                 opt_prof.innerHTML = class_prof[i][1];
@@ -245,7 +242,7 @@ function clickSelection(classes, subjs, professors){
             select_class.remove(0);
         }
         for (var i = 0; i < class_prof.length; i++) {
-            if (class_prof[i][1] == select_prof.value && class_prof[i][2] == select_subj.value  && class_prof[i][3] == select_year.value) {
+            if (class_prof[i][1] == select_prof.value && class_prof[i][2] == select_subj.value && class_prof[i][3] == select_year.value&& class_prof[i][3] == select_year.value && class_prof[i][4] == select_term.value) {
                 var opt_class = document.createElement('option');
                 opt_class.value = class_prof[i][0];
                 opt_class.innerHTML = class_prof[i][0];
@@ -259,6 +256,7 @@ function clickBtn(classes, subjs, professors, select_class, select_prof, select_
     var reset = document.getElementById('reset');
     reset.addEventListener('click', () => {
         document.querySelector('p').innerHTML = '';
+        document.getElementById('subj_submit').selectedIndex = 0;
         while (select_prof.length > 0) {
             select_prof.remove(0);
         }
@@ -275,14 +273,19 @@ function calculate_gpa(courses){
     var classmenu = document.getElementById('classes');
     var profmenu = document.getElementById('professors');
     var year_menu = document.getElementById('year');
+    var term_menu = document.getElementById('term');
+    var year_term = '';
+    var term = '';
     grade = 0;
     enrolled = 0;
     var yArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (var i = 0; i < courses.length; i++) {
-        if (courses[i].CRSE_TITLE == classmenu.value && courses[i].PROF_NAME == profmenu.value && courses[i].YEAR == year_menu.value) {
+        if (courses[i].CRSE_TITLE == classmenu.value && courses[i].PROF_NAME == profmenu.value && courses[i].YEAR == year_menu.value && courses[i].TERM == term_menu.value) {
             layout = courses[i].CRSE_TITLE;
             enrolled += courses[i].CNTOFGRADE;
             prof_name = courses[i].PROF_NAME;
+            year_term = courses[i].YEAR_TERM;
+            term = courses[i].TERM;
             if (courses[i].GRADE == 'A') {
                 grade += 4.0 * courses[i].CNTOFGRADE;
                 yArray[1] += courses[i].CNTOFGRADE;
@@ -337,15 +340,15 @@ function calculate_gpa(courses){
         mychart.destroy();
     }
     if (grade != 0 && enrolled != 0){
-        draw(grade, enrolled, xArray, yArray, layout, prof_name, year_menu.value);
+        draw(grade, enrolled, xArray, yArray, layout, prof_name, year_term, term);
     }
     else{
         document.querySelector('p').innerHTML = 'No such evaluation available.';
     }
 }
-function draw(grade, enrolled, xArray, yArray, layout, prof_name, year) {
+function draw(grade, enrolled, xArray, yArray, layout, prof_name, year_term, term) {
     //console.log(grade, enrolled);
-    document.querySelector('p').innerHTML = 'year: '+year+'<br><br>Average GPA: '+(grade/enrolled).toFixed(2)+'<br><br>Enrolled: '+enrolled;
+    document.querySelector('p').innerHTML = 'year: '+year_term+' term: '+term+'<br><br>Average GPA: '+(grade/enrolled).toFixed(2)+'<br><br>Enrolled: '+enrolled;
     grade = 0;
     enrolled = 0;
     var barColors = [];
@@ -378,5 +381,3 @@ function draw(grade, enrolled, xArray, yArray, layout, prof_name, year) {
         }
     });
 }             
-
-
