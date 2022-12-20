@@ -12,15 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/cd99b7ce8b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./main.css">
-    <script src="./PapaParse/papaparse.js"></script>
+    <!-- <script src="./PapaParse/papaparse.js"></script> -->
     <script src="./main.js" type="module"></script>
 </head>
  <body>
     <div class="wrapper">
         <header class="main-head">
-            <div class="title-box">
-                <a class="header-title" href="#">Davis Time</a>
-            </div>
+            <div class="title-box">Davis Time</div>
         </header>
         <div class="main-page">
             <main>
@@ -30,6 +28,12 @@
                     <option value="18-19">2018-2019</option>
                     <option value="19-20">2019-2020</option>
                     <option value="20-21">2020-2021</option>
+                </select>
+                <select name="term" id="term">
+                    <option value="Fall">Fall</option>
+                    <option value="Winter">Winter</option>
+                    <option value="Spring">Spring</option>
+                    <option value="Summer">Summer</option>
                 </select>
                 <!-- <button type="year_submit" id="year_submit">Submit Year</button> -->
                 <select name="subj" id="subj"></select>
